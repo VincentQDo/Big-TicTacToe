@@ -1,4 +1,18 @@
-<script>
+<script lang="ts">
+	import { onMount } from 'svelte';
+
+	const socket = new WebSocket('ws://localhost:8080');
+
+	function sendMessage(inputText: any) {
+		console.log(inputText);
+		socket.send(inputText);
+	}
+
+	onMount(() => {
+		socket.onmessage = (res) => {
+			console.log(res);
+		};
+	});
 </script>
 
 <svelte:head>
@@ -6,6 +20,7 @@
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-<input type="text" />
-<button>Send</button>
-<p>Hello world</p>
+<form>
+	<input type="text" />
+	<button on:submit={sendMessage}>Send</button>
+</form>
